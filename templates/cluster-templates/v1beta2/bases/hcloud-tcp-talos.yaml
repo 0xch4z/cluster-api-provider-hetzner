@@ -1,0 +1,36 @@
+apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+kind: TalosControlPlane
+metadata:
+  name: "${CLUSTER_NAME}-control-plane"
+spec:
+  replicas: ${CONTROL_PLANE_MACHINE_COUNT}
+  version: "${KUBERNETES_VERSION}"
+  infrastructureTemplate:
+    kind: HCloudMachineTemplate
+    apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+    name: "${CLUSTER_NAME}-control-plane"
+  controlPlaneConfig:
+    controlplane:
+      generateType: controlplane
+      talosVersion: "${TALOS_VERSION}"
+      configPatches:
+        - op: add
+          path: /machine/features/kubernetesTalosAPIAccess
+          value:
+            enabled: true
+            allowedRoles:
+              - os:reader
+            allowedKubernetesNamespaces:
+              - kube-system
+    init:
+      generateType: init
+      talosVersion: "${TALOS_VERSION}"
+      configPatches:
+        - op: add
+          path: /machine/features/kubernetesTalosAPIAccess
+          value:
+            enabled: true
+            allowedRoles:
+              - os:reader
+            allowedKubernetesNamespaces:
+              - kube-system

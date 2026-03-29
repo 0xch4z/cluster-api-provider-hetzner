@@ -1,0 +1,12 @@
+Cluster API Provider Hetzner (CAPH)
+Copyright 2021-2025 Syself GmbH and the CAPH contributors
+
+This project is a fork of https://github.com/syself/cluster-api-provider-hetzner,
+originally created and maintained by Syself GmbH and the community.
+
+This fork includes modifications to support:
+- Cluster API v1beta2 (CAPI v1.12)
+- Kubernetes 1.35
+- Talos Linux as a node OS (via CABPT/CACPPT)
+
+Licensed under the Apache License, Version 2.0.

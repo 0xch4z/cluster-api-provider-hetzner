@@ -628,12 +628,13 @@ generate-api-ci: generate-manifests generate-go-deepcopy
 	fi
 
 cluster-templates: $(KUSTOMIZE)
-	$(KUSTOMIZE) build templates/cluster-templates/hcloud --load-restrictor LoadRestrictionsNone  > generated/cluster-template.yaml
-	$(KUSTOMIZE) build templates/cluster-templates/hcloud --load-restrictor LoadRestrictionsNone  > generated/cluster-template-hcloud.yaml
-	$(KUSTOMIZE) build templates/cluster-templates/hcloud-network --load-restrictor LoadRestrictionsNone  > generated/cluster-template-hcloud-network.yaml
-	$(KUSTOMIZE) build templates/cluster-templates/hetzner-hcloud-control-planes --load-restrictor LoadRestrictionsNone  > generated/cluster-template-hetzner-hcloud-control-planes.yaml
-	$(KUSTOMIZE) build templates/cluster-templates/hetzner-baremetal-control-planes --load-restrictor LoadRestrictionsNone  > generated/cluster-template-hetzner-baremetal-control-planes.yaml
-	$(KUSTOMIZE) build templates/cluster-templates/hetzner-baremetal-control-planes-remediation --load-restrictor LoadRestrictionsNone  > generated/cluster-template-hetzner-baremetal-control-planes-remediation.yaml
+	$(KUSTOMIZE) build templates/cluster-templates/v1beta2/hcloud --load-restrictor LoadRestrictionsNone  > generated/cluster-template.yaml
+	$(KUSTOMIZE) build templates/cluster-templates/v1beta2/hcloud --load-restrictor LoadRestrictionsNone  > generated/cluster-template-hcloud.yaml
+	$(KUSTOMIZE) build templates/cluster-templates/v1beta2/hcloud-network --load-restrictor LoadRestrictionsNone  > generated/cluster-template-hcloud-network.yaml
+	$(KUSTOMIZE) build templates/cluster-templates/v1beta2/hcloud-talos --load-restrictor LoadRestrictionsNone  > generated/cluster-template-hcloud-talos.yaml
+	$(KUSTOMIZE) build templates/cluster-templates/v1beta2/hetzner-hcloud-control-planes --load-restrictor LoadRestrictionsNone  > generated/cluster-template-hetzner-hcloud-control-planes.yaml
+	$(KUSTOMIZE) build templates/cluster-templates/v1beta2/hetzner-baremetal-control-planes --load-restrictor LoadRestrictionsNone  > generated/cluster-template-hetzner-baremetal-control-planes.yaml
+	$(KUSTOMIZE) build templates/cluster-templates/v1beta2/hetzner-baremetal-control-planes-remediation --load-restrictor LoadRestrictionsNone  > generated/cluster-template-hetzner-baremetal-control-planes-remediation.yaml
 
 ##@ Format
 ##########

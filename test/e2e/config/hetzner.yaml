@@ -175,6 +175,10 @@ variables:
   HCLOUD_REGION: "nbg1"
   HCLOUD_CONTROL_PLANE_MACHINE_TYPE: cpx32
   HCLOUD_WORKER_MACHINE_TYPE: cpx21
+
+  # Talos Variables
+  TALOS_VERSION: "v1.12.6"
+  TALOS_IMAGE_NAME: "${TALOS_IMAGE_NAME:-talos-v1.12.6}"
   REDACT_LOG_SCRIPT: "../../hack/log/redact.sh"
 
 intervals:

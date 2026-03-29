@@ -86,8 +86,6 @@ func newTestService(
 	utilruntime.Must(infrav1.AddToScheme(scheme))
 	utilruntime.Must(corev1.AddToScheme(scheme))
 	utilruntime.Must(clusterv1.AddToScheme(scheme))
-	c := fakeclient.NewClientBuilder().WithScheme(scheme).WithRuntimeObjects(host).Build()
-	ctx := context.Background()
 
 	capiMachine := &clusterv1.Machine{
 		ObjectMeta: metav1.ObjectMeta{
@@ -102,10 +100,6 @@ func newTestService(
 			NodeRef: clusterv1.MachineNodeReference{Name: host.Name},
 		},
 	}
-	err := c.Create(ctx, capiMachine)
-	if err != nil {
-		panic(err)
-	}
 
 	node := &corev1.Node{
 		ObjectMeta: metav1.ObjectMeta{
@@ -117,29 +111,24 @@ func newTestService(
 			},
 		},
 	}
-	err = c.Create(ctx, node)
-	if err != nil {
-		panic(err)
-	}
 
 	hbmm := &infrav1.HetznerBareMetalMachine{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      host.Name,
 			Namespace: host.Namespace,
+			OwnerReferences: []metav1.OwnerReference{
+				{
+					APIVersion: capiMachine.APIVersion,
+					Kind:       capiMachine.Kind,
+					Name:       capiMachine.Name,
+					UID:        capiMachine.UID,
+				},
+			},
 		},
 	}
 
-	hbmm.OwnerReferences = append(hbmm.OwnerReferences, metav1.OwnerReference{
-		APIVersion: capiMachine.APIVersion,
-		Kind:       capiMachine.Kind,
-		Name:       capiMachine.Name,
-		UID:        capiMachine.UID,
-	})
-
-	err = c.Create(ctx, hbmm)
-	if err != nil {
-		panic(err)
-	}
+	c := fakeclient.NewClientBuilder().WithScheme(scheme).
+		WithRuntimeObjects(host, capiMachine, node, hbmm).Build()
 
 	return &Service{
 		&scope.BareMetalHostScope{

@@ -18,4 +18,8 @@ HETZNER_SSH_PUB=$(base64 -w0 "$HETZNER_SSH_PUB_PATH")
 HETZNER_SSH_PRIV=$(base64 -w0 "$HETZNER_SSH_PRIV_PATH")
 export HETZNER_SSH_PUB HETZNER_SSH_PRIV
 
+# Talos (only needed for hcloud-talos flavor)
+# export TALOS_VERSION=v1.12.6
+# export TALOS_IMAGE_NAME=talos-v1.12.6
+
 export PATH="$PWD/hack/tools/bin:$PATH"

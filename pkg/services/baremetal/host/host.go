@@ -2012,7 +2012,7 @@ func (s *Service) actionProvisioned(ctx context.Context) actionResult {
 		return actionError{err: err}
 	}
 
-	if !machine.Status.NodeRef.IsDefined() {
+	if machine == nil || !machine.Status.NodeRef.IsDefined() {
 		// Very unlikely, but we want to avoid a panic.
 		err = errors.New("machine.Status.NodeRef is not defined")
 		return actionError{err: err}

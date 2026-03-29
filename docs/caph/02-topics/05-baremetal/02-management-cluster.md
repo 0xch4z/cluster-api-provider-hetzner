@@ -44,7 +44,7 @@ Required Variables:
 Optional Variables:
   - CLUSTER_NAME                 (defaults to my-cluster)
   - CONTROL_PLANE_MACHINE_COUNT  (defaults to 3)
-  - KUBERNETES_VERSION           (defaults to v1.33.6)
+  - KUBERNETES_VERSION           (defaults to v1.35.3)
   - WORKER_MACHINE_COUNT         (defaults to 3)
 ```
 

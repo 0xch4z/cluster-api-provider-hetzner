@@ -12,11 +12,7 @@ This is a fork of [syself/cluster-api-provider-hetzner](https://github.com/sysel
 
 | Flavor | Control Plane | Workers | OS | Bootstrap |
 |--------|--------------|---------|-----|-----------|
-| `hcloud` | HCloud | HCloud | Ubuntu 24.04 | Kubeadm |
-| `hcloud-network` | HCloud | HCloud | Ubuntu 24.04 | Kubeadm |
 | `hcloud-talos` | HCloud | HCloud | Talos Linux | CABPT/CACPPT |
-| `hetzner-hcloud-control-planes` | HCloud | Bare Metal | Ubuntu 24.04 | Kubeadm |
-| `hetzner-baremetal-control-planes` | Bare Metal | Bare Metal | Ubuntu 24.04 | Kubeadm |
 
 ## Talos Usage
 
@@ -26,13 +22,17 @@ The `hcloud-talos` flavor requires:
 2. The [Talos bootstrap provider (CABPT)](https://github.com/siderolabs/cluster-api-bootstrap-provider-talos) and [control plane provider (CACPPT)](https://github.com/siderolabs/cluster-api-control-plane-provider-talos) installed in your management cluster
 
 ```bash
+export HCLOUD_CONTROL_PLANE_MACHINE_TYPE=cpx41
+export HCLOUD_WORKER_MACHINE_TYPE=cpx41
+export SSH_KEY_NAME=<your-ssh-key>
+export HCLOUD_REGION=<desired-region>
 export TALOS_VERSION=v1.12.6
-export TALOS_IMAGE_NAME=talos-v1.12.6  # name or label of your hcloud snapshot
+export TALOS_IMAGE_NAME=talos-v1.12.6
 clusterctl generate cluster my-cluster \
   --flavor hcloud-talos \
   --kubernetes-version v1.35.3 \
-  --control-plane-machine-count 3 \
-  --worker-machine-count 3 \
+  --control-plane-machine-count 1 \
+  --worker-machine-count 1 \
   > my-cluster.yaml
 ```
 
@@ -43,6 +43,15 @@ clusterctl generate cluster my-cluster \
 | Cluster API | v1.12.x (v1beta2) |
 | Kubernetes | 1.29 - 1.35 |
 | Talos Linux | v1.12.x |
+
+## Local development
+
+```bash
+./hack/local-install.sh && clusterctl init \
+  --infrastructure hetzner \
+  --bootstrap talos \
+  --control-plane talos
+```
 
 ## Upstream
 

@@ -7,3 +7,17 @@ spec:
     spec:
       generateType: worker
       talosVersion: "${TALOS_VERSION}"
+      strategicPatches:
+        - |
+          machine:
+            features:
+              kubernetesTalosAPIAccess:
+                enabled: true
+                allowedRoles:
+                  - os:reader
+                allowedKubernetesNamespaces:
+                  - kube-system
+          cluster:
+            externalCloudProvider:
+              enabled: true
+              manifests: []

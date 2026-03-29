@@ -13,24 +13,34 @@ spec:
     controlplane:
       generateType: controlplane
       talosVersion: "${TALOS_VERSION}"
-      configPatches:
-        - op: add
-          path: /machine/features/kubernetesTalosAPIAccess
-          value:
-            enabled: true
-            allowedRoles:
-              - os:reader
-            allowedKubernetesNamespaces:
-              - kube-system
+      strategicPatches:
+        - |
+          machine:
+            features:
+              kubernetesTalosAPIAccess:
+                enabled: true
+                allowedRoles:
+                  - os:reader
+                allowedKubernetesNamespaces:
+                  - kube-system
+          cluster:
+            externalCloudProvider:
+              enabled: true
+              manifests: []
     init:
       generateType: init
       talosVersion: "${TALOS_VERSION}"
-      configPatches:
-        - op: add
-          path: /machine/features/kubernetesTalosAPIAccess
-          value:
-            enabled: true
-            allowedRoles:
-              - os:reader
-            allowedKubernetesNamespaces:
-              - kube-system
+      strategicPatches:
+        - |
+          machine:
+            features:
+              kubernetesTalosAPIAccess:
+                enabled: true
+                allowedRoles:
+                  - os:reader
+                allowedKubernetesNamespaces:
+                  - kube-system
+          cluster:
+            externalCloudProvider:
+              enabled: true
+              manifests: []

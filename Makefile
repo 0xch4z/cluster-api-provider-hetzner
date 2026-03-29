@@ -347,13 +347,30 @@ test-release:
 	$(MAKE) set-manifest-pull-policy PULL_POLICY=IfNotPresent
 	$(MAKE) release-manifests
 
+CAPH_VERSION ?= v1.2.0
+LOCAL_PROVIDER_DIR = $(RELEASE_DIR)/infrastructure-hetzner/$(CAPH_VERSION)
+
+.PHONY: local-install
+local-install: release-manifests ## Build and stage the provider for local clusterctl usage
+	mkdir -p $(LOCAL_PROVIDER_DIR)
+	cp $(RELEASE_DIR)/infrastructure-components.yaml $(LOCAL_PROVIDER_DIR)/
+	cp $(RELEASE_DIR)/metadata.yaml $(LOCAL_PROVIDER_DIR)/
+	cp $(RELEASE_DIR)/cluster-template* $(LOCAL_PROVIDER_DIR)/ 2>/dev/null || true
+	cp $(RELEASE_DIR)/cluster-class* $(LOCAL_PROVIDER_DIR)/ 2>/dev/null || true
+	@echo ""
+	@echo "Provider staged at: $(LOCAL_PROVIDER_DIR)"
+	@echo "Ensure your clusterctl.yaml points to:"
+	@echo "  $(abspath $(LOCAL_PROVIDER_DIR))/infrastructure-components.yaml"
+	@echo ""
+	@echo "Then run:"
+	@echo "  clusterctl init --infrastructure hetzner --bootstrap talos --control-plane talos"
+
 .PHONY: release-manifests
 release-manifests: generate-manifests generate-go-deepcopy $(KUSTOMIZE) $(RELEASE_DIR) cluster-templates ## Builds the manifests to publish with a release
 	$(KUSTOMIZE) build config/default > $(RELEASE_DIR)/infrastructure-components.yaml
-	## Build $(INFRA_SHORT)-components (aggregate of all of the above).
 	cp metadata.yaml $(RELEASE_DIR)/metadata.yaml
-	cp templates/cluster-templates/cluster-template* $(RELEASE_DIR)/
-	cp templates/cluster-templates/cluster-class* $(RELEASE_DIR)/
+	cp generated/cluster-template* $(RELEASE_DIR)/
+	cp templates/cluster-templates/v1beta2/cluster-class* $(RELEASE_DIR)/
 
 .PHONY: release
 release: clean-release  ## Builds and push container images using the latest git tag for the commit.

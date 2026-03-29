@@ -439,7 +439,7 @@ func TestValidateHetznerBareMetalMachineSpecUpdate_ProviderID(t *testing.T) {
 			ProviderID: ptr.To("provider://foo"),
 		},
 		HetznerBareMetalMachineSpec{})
-	require.Equal(t, `[spec.providerID: Invalid value: "null": providerID immutable]`, fmt.Sprintf("%+v", got))
+	require.Equal(t, `[spec.providerID: Invalid value: null: providerID immutable]`, fmt.Sprintf("%+v", got))
 
 	got = validateHetznerBareMetalMachineSpecUpdate(
 		HetznerBareMetalMachineSpec{

@@ -236,3 +236,10 @@ const (
 	// RebootSucceededCondition indicates that the machine got rebooted successfully.
 	RebootSucceededCondition = "RebootSucceeded"
 )
+
+const (
+	// DeleteMachineSucceededCondition indicates that the machine deletion has succeeded.
+	DeleteMachineSucceededCondition = "DeleteMachineSucceeded"
+	// DeleteMachineInProgressReason indicates that the machine deletion is in progress.
+	DeleteMachineInProgressReason = "DeleteMachineInProgress"
+)
